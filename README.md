@@ -10,22 +10,22 @@ Encode to and from Base64
 # Compilation
 
 ## Clang
-`clang -m32 -c -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.o src\base64_encdec.c`
-`clang -m32 -shared -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.dll build\Base64_encdec_x86.o`
+	clang -m32 -c -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.o src\base64_encdec.c
+	clang -m32 -shared -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.dll build\Base64_encdec_x86.o
 
 ## GCC
-`gcc -m32 -c -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.o src\base64_encdec.c`
-`gcc -m32 -shared -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.dll build\Base64_encdec_x86.o`
+	gcc -m32 -c -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.o src\base64_encdec.c
+	gcc -m32 -shared -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.dll build\Base64_encdec_x86.o
 
 # Linking to binary
 
 ## Clang
-`clang -c -o file.o file.c`
-`clang -o file.exe Base64_encdec_x86.o Base64_encdec_x86.lib`
+	clang -c -o file.o file.c
+	clang -o file.exe Base64_encdec_x86.o Base64_encdec_x86.lib
 
 ## GCC
-`gcc -c -o file.o file.c`
-`gcc -o file.exe Base64_encdec_x86.o Base64_encdec_x86.o`
+	gcc -c -o file.o file.c
+	gcc -o file.exe Base64_encdec_x86.o Base64_encdec_x86.o
 
 
 # Example
