@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "include\\base64_encdec.h"
+#include "..\\src\\\base64_encdec.h"
 
 #define APP_NAME "BASE64_ENC_DEC"
 
@@ -78,6 +78,18 @@ int32_t decode(int8_t *input, size_t size, int8_t *output, size_t *capacity, boo
 	return -1;
 }
 
+size_t roundUp(size_t numToRound, size_t multiple)
+{
+    if (multiple == 0)
+        return numToRound;
+
+    size_t remainder = numToRound % multiple;
+    if (remainder == 0)
+        return numToRound;
+
+    return numToRound + multiple - remainder;
+}
+
 int main(int argc, char const *argv[])
 {
 	bool file_mode = false;
@@ -143,7 +155,7 @@ int main(int argc, char const *argv[])
 	if (string_mode == true)
 	{
 		size_t input_size = strlen(input);
-		size_t output_capacity = (input_size * 4 / 3) + 1;
+		size_t output_capacity = roundUp(input_size * 4 / 3, 4) + 1;
 		output = (char *)malloc(output_capacity);
 		if (output == NULL)
 		{
@@ -190,7 +202,7 @@ int main(int argc, char const *argv[])
 			return BUFFER_NOTENOUGH_MEMORY;
 		}
 
-		output_capacity = (input_size * 4 / 3) + 1;
+		output_capacity = roundUp(input_size * 4 / 3, 4) + 1;
 		int8_t *out_buffer = (int8_t *)malloc(output_capacity);
 		if (out_buffer == NULL)
 		{

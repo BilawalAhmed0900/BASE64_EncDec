@@ -131,7 +131,7 @@ int32_t base64_encode(int8_t *input, size_t size, int8_t *output, size_t *capaci
 	while (size)
 	{
 		struct int24_t int24_T = { 0, 0, 0 };
-		struct gint32_t gint32_T;
+		struct gint32_t gint32_T = { 0, 0, 0, 0};
 
 		size_t padding_bytes = 0;
 		size_t to_be_read = (size >= 3) ? sizeof(int24_T) : size;
@@ -187,7 +187,7 @@ int32_t base64_decode(int8_t *input, size_t size, int8_t *output, size_t *capaci
 	size_t written = 0;
 	while(size)
 	{
-		struct int24_t int24_T;
+		struct int24_t int24_T = { 0, 0, 0 };
 		struct gint32_t gint32_T = { 0, 0, 0, 0 };
 
 		memcpy(&gint32_T, &input[read], sizeof(struct gint32_t));
