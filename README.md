@@ -21,11 +21,11 @@ Encode to and from Base64
 
 ## Clang
 	clang -c -o file.o file.c
-	clang -o file.exe Base64_encdec_x86.o Base64_encdec_x86.lib
+	clang -o file.exe file.o Base64_encdec_x86.o Base64_encdec_x86.lib
 
 ## GCC
 	gcc -c -o file.o file.c
-	gcc -o file.exe Base64_encdec_x86.o Base64_encdec_x86.o
+	gcc -o file.exe file.o Base64_encdec_x86.o Base64_encdec_x86.o
 
 
 # Example
