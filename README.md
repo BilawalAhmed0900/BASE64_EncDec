@@ -5,7 +5,7 @@ Encode to and from Base64
 
 	int32_t base64_encode(int8_t *input, size_t size, int8_t *output, size_t *capacity);
 	int32_t base64_decode(int8_t *input, size_t size, int8_t *output, size_t *capacity);
-	void    base64_geterrormessage(int32_t errno, int8_t *message, size_t capacity);
+	void base64_geterrormessage(int32_t error_number, int8_t *message, size_t capacity);
 
 # Compilation
 
