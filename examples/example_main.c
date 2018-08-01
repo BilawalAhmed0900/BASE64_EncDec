@@ -152,34 +152,9 @@ int main(int argc, char const *argv[])
 		return STRING_FILE_MODE_BOTHFALSE;
 	}
 
-	if (string_mode == true)
+	FILE *inptr, *outptr;
+	if (file_mode == true)
 	{
-		size_t input_size = strlen(input);
-		size_t output_capacity = roundUp(input_size * 4 / 3, 4) + 1;
-		output = (char *)malloc(output_capacity);
-		if (output == NULL)
-		{
-			fprintf(stderr, "Cannot allocate memory for output string\n");
-			return STRING_NOTENOUGH_MEMORY;
-		}
-		memset(output, 0, output_capacity);
-
-		int32_t result = -1;
-		if (is_decode == false)
-		{
-			result = encode((int8_t *)input, input_size, (int8_t *)output, &output_capacity, string_mode);
-		}
-		else
-		{
-			result = decode((int8_t *)input, input_size, (int8_t *)output, &output_capacity, string_mode);
-		}
-		
-		printf("%s\n\nError code: %d\n", output, result);
-		free(output);
-	}
-	else
-	{
-		FILE *inptr, *outptr; 
 		fopen_s(&inptr, input, "rb");
 		if (inptr == NULL)
 		{
@@ -193,45 +168,66 @@ int main(int argc, char const *argv[])
 			fprintf(stderr, "Cannot create output file\n");
 			return FILE_OUTPUT_NOT_OPEN;
 		}
+	}
 
-		size_t input_size, output_capacity;
-		int8_t *in_buffer = file_read(inptr, &input_size);
-		if (in_buffer == NULL)
-		{
-			fprintf(stderr, "Cannot allocate memory for input buffer\n");
-			return BUFFER_NOTENOUGH_MEMORY;
-		}
+	size_t input_size, output_capacity;
+	int8_t *in_buffer, *out_buffer;
+	if (file_mode == true)
+	{
+		in_buffer = file_read(inptr, &input_size);
+	}
+	else if (string_mode == true)
+	{
+		input_size = strlen(input);
+		in_buffer = (int8_t *)input;
+	}
 
-		output_capacity = roundUp(input_size * 4 / 3, 4) + 1;
-		int8_t *out_buffer = (int8_t *)malloc(output_capacity);
-		if (out_buffer == NULL)
-		{
-			fprintf(stderr, "Cannot allocate memory for output buffer\n");
-			return BUFFER_NOTENOUGH_MEMORY;
-		}
+	output_capacity = roundUp(input_size * 4 / 3, 4) + 1;
+	out_buffer = (int8_t *)malloc(output_capacity);
+	if (out_buffer == NULL)
+	{
+		fprintf(stderr, "Cannot allocate memory for output buffer\n");
+		return BUFFER_NOTENOUGH_MEMORY;
+	}
+	memset(out_buffer, 0, output_capacity);
 
-		int32_t result;
+	int32_t result;
+	if (is_decode == false)
+	{
+		result = encode(in_buffer, input_size, out_buffer, &output_capacity, string_mode);
+	}
+	else
+	{
+		result = decode(in_buffer, input_size, out_buffer, &output_capacity, string_mode);
+	}
 
-		if (is_decode == false)
-		{
-			result = encode(in_buffer, input_size, out_buffer, &output_capacity, string_mode);
-		}
-		else
-		{
-			result = decode(in_buffer, input_size, out_buffer, &output_capacity, string_mode);
-		}
-		
+	if (result != BASE64_ISOKAY)
+	{
+		base64_geterrormessage(result, NULL, 0);
+		return result;
+	}
+
+	if (file_mode == true)
+	{
 		fwrite(out_buffer, sizeof(int8_t), output_capacity, outptr);
-
-		free(out_buffer);
+	}
+	else if (string_mode == true)
+	{	
+		fprintf(stdout, "%s\n\n", out_buffer);
+	}
+	
+	free(out_buffer);
+	if (string_mode == false)
+	{
 		free(in_buffer);
-
+	}
+	
+	if (file_mode == true)
+	{
 		fclose(outptr);
 		fclose(inptr);
+	}
 
-		printf("Error code: %d\n", result);
-	}	
-	
-
+	base64_geterrormessage(ISOKAY, NULL, 0);
 	return ISOKAY;
 }
