@@ -1,11 +1,5 @@
 #include <stdint.h>
 
-#ifdef LIBRARY_EXPORT
-	#define LIBRARY __declspec(dllexport)
-#else
-	#define LIBRARY __declspec(dllimport)
-#endif
-
 #if defined _WIN32 || defined __CYGWIN__
   #ifdef LIBRARY_EXPORT
     #ifdef __GNUC__
