@@ -16,13 +16,13 @@
 #pragma pack(push, 1)
 struct int24_t
 {
-	int8_t first, second, third;
+	uint8_t first, second, third;
 };
 
 /* To avoid naming conflict from stdint.h */
 struct gint32_t
 {
-	int8_t first, second, third, fourth;
+	uint8_t first, second, third, fourth;
 };
 #pragma pack(pop)
 
@@ -36,10 +36,10 @@ void convert_24_to_32(struct int24_t *int24_T, struct gint32_t *gint32_T)
     /*
 		Take 6-bit and fill it to 8-bit(first zero-ing it)
     */ 
-	gint32_T->first  = (uint8_t)RIGHT_SHIFT((uint8_t)int24_T->first, 2);
-    gint32_T->second = (uint8_t)(LEFT_SHIFT(((uint8_t)int24_T->first  & TWO_BITS_SET ), 4) | RIGHT_SHIFT((uint8_t)int24_T->second, 4));
-    gint32_T->third  = (uint8_t)(LEFT_SHIFT(((uint8_t)int24_T->second & FOUR_BITS_SET), 2) | RIGHT_SHIFT((uint8_t)int24_T->third , 6));
-    gint32_T->fourth = (uint8_t)((uint8_t)int24_T->third & SIX_BITS_SET);
+	gint32_T->first  = RIGHT_SHIFT(int24_T->first, 2);
+    gint32_T->second = (LEFT_SHIFT((int24_T->first  & TWO_BITS_SET ), 4) | RIGHT_SHIFT(int24_T->second, 4));
+    gint32_T->third  = (LEFT_SHIFT((int24_T->second & FOUR_BITS_SET), 2) | RIGHT_SHIFT(int24_T->third , 6));
+    gint32_T->fourth = (int24_T->third & SIX_BITS_SET);
 }
 
 /*
@@ -53,9 +53,9 @@ void convert_32_to_24(struct int24_t *int24_T, struct gint32_t *gint32_T)
 		Take 8-bit and fill it to 6-bit removing 7th and 8th bit
     */
     
-	int24_T->first  = (uint8_t)(LEFT_SHIFT((uint8_t)gint32_T->first, 2) | RIGHT_SHIFT((uint8_t)gint32_T->second, 4));
-    int24_T->second = (uint8_t)(LEFT_SHIFT(((uint8_t)gint32_T->second & FOUR_BITS_SET), 4) | RIGHT_SHIFT((uint8_t)gint32_T->third, 2));
-    int24_T->third  = (uint8_t)(LEFT_SHIFT(((uint8_t)gint32_T->third  & TWO_BITS_SET),  6) | (uint8_t)gint32_T->fourth);
+	int24_T->first  = (LEFT_SHIFT(gint32_T->first, 2) | RIGHT_SHIFT(gint32_T->second, 4));
+    int24_T->second = (LEFT_SHIFT((gint32_T->second & FOUR_BITS_SET), 4) | RIGHT_SHIFT(gint32_T->third, 2));
+    int24_T->third  = (LEFT_SHIFT((gint32_T->third  & TWO_BITS_SET),  6) | gint32_T->fourth);
 }
 
 /*
@@ -195,8 +195,8 @@ int32_t base64_decode(int8_t *input, size_t size, int8_t *output, size_t *capaci
 		size -= sizeof(struct gint32_t);
 
 		size_t padding_count = base64_to_index(&gint32_T);
-		if (gint32_T.first == -1 || gint32_T.second == -1 
-			|| gint32_T.third == -1 || gint32_T.fourth == -1)
+		if (gint32_T.first == (uint8_t)-1 || gint32_T.second == (uint8_t)-1 
+			|| gint32_T.third == (uint8_t)-1 || gint32_T.fourth == (uint8_t)-1)
 		{
 			/*
 				-1 is given when digit is not found in the array of BASE64

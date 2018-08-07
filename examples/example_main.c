@@ -9,7 +9,7 @@
 
 enum LOCAL_ERROR
 {
-	ISOKAY, EXTRA_PARAMETERS, STRING_FILE_MODE_BOTHTRUE, STRING_FILE_MODE_BOTHFALSE, STRING_NOTENOUGH_MEMORY,
+	ISOKAY, EXTRA_PARAMETERS, STRING_FILE_MODE_BOTHUSED_NOTUSED, STRING_NOTENOUGH_MEMORY,
 	FILE_INPUT_NOT_OPEN, FILE_OUTPUT_NOT_OPEN, BUFFER_NOTENOUGH_MEMORY
 };
 
@@ -141,15 +141,13 @@ int main(int argc, char const *argv[])
 		}
 	}
 
-	if (file_mode == true && string_mode == true)
+	/* Exclusive OR(XOR) is false when both are true or both are false */
+	if ((file_mode ^ string_mode) == false)
 	{
-		fprintf(stderr, "Both string and file mode is set to true\n");
-		return STRING_FILE_MODE_BOTHTRUE;
-	}
-	else if (file_mode == false && string_mode == false)
-	{
-		fprintf(stderr, "Both string and file mode is set to false\n");
-		return STRING_FILE_MODE_BOTHFALSE;
+		fprintf(stderr, "Both string and file mode is used or both unused\n");
+
+		print_help();
+		return STRING_FILE_MODE_BOTHUSED_NOTUSED;
 	}
 
 	FILE *inptr, *outptr;

@@ -1,0 +1,154 @@
+object TabbedForm: TTabbedForm
+  Left = 0
+  Top = 0
+  Caption = 'TabbedForm'
+  ClientHeight = 567
+  ClientWidth = 384
+  FormFactor.Width = 1440
+  FormFactor.Height = 900
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  DesignerMasterStyle = 0
+  object HeaderToolBar: TToolBar
+    Anchors = []
+    Size.Width = 384.000000000000000000
+    Size.Height = 48.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    object ToolBarLabel: TLabel
+      Align = Contents
+      Size.Width = 384.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'toollabel'
+      TextSettings.HorzAlign = Center
+      Text = 'Base64 Codec'
+    end
+  end
+  object TabControl1: TTabControl
+    Align = Client
+    FullSize = True
+    Size.Width = 384.000000000000000000
+    Size.Height = 519.000000000000000000
+    Size.PlatformDefault = False
+    TabHeight = 49.000000000000000000
+    TabIndex = 1
+    TabOrder = 1
+    TabPosition = PlatformDefault
+    Sizes = (
+      384s
+      470s
+      384s
+      470s)
+    object TabItem1: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 191.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'tabitemtoprated'
+      TabOrder = 0
+      Text = 'Encoding'
+      ExplicitSize.cx = 50.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      object ToEncodeMemo: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        Position.X = 8.000000000000000000
+        Position.Y = 24.000000000000000000
+        Size.Width = 369.000000000000000000
+        Size.Height = 385.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Viewport.Width = 365.000000000000000000
+        Viewport.Height = 381.000000000000000000
+      end
+      object ToEncodeButton: TButton
+        Position.X = 270.000000000000000000
+        Position.Y = 420.000000000000000000
+        Size.Width = 105.000000000000000000
+        Size.Height = 42.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'Encode'
+        OnClick = ToEncodeButtonClick
+      end
+      object EncodeUndoButton: TButton
+        Position.X = 10.000000000000000000
+        Position.Y = 420.000000000000000000
+        Size.Width = 89.000000000000000000
+        Size.Height = 41.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'Undo'
+        Visible = False
+        OnClick = EncodeUndoButtonClick
+      end
+    end
+    object TabItem2: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 191.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'tabitemcontacts'
+      TabOrder = 0
+      Text = 'Decoding'
+      ExplicitSize.cx = 50.000000000000000000
+      ExplicitSize.cy = 49.000000000000000000
+      object ToDecodeMemo: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        Position.X = 8.000000000000000000
+        Position.Y = 24.000000000000000000
+        Size.Width = 369.000000000000000000
+        Size.Height = 385.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Viewport.Width = 365.000000000000000000
+        Viewport.Height = 381.000000000000000000
+      end
+      object ToDecodeButton: TButton
+        Position.X = 270.000000000000000000
+        Position.Y = 420.000000000000000000
+        Size.Width = 105.000000000000000000
+        Size.Height = 42.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        Text = 'Decode'
+        OnClick = ToDecodeButtonClick
+      end
+      object DecodeUndoButton: TButton
+        Position.X = 10.000000000000000000
+        Position.Y = 420.000000000000000000
+        Size.Width = 89.000000000000000000
+        Size.Height = 41.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Text = 'Undo'
+        Visible = False
+        OnClick = DecodeUndoButtonClick
+      end
+    end
+  end
+  object GestureManager1: TGestureManager
+    Sensitivity = 80.000000000000000000
+    Left = 352
+    Top = 56
+    GestureData = <
+      item
+        Control = Owner
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end>
+      end>
+  end
+end
