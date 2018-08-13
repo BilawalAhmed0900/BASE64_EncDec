@@ -3,7 +3,8 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "..\\src\\base64_encdec.h"
+#include <stddef.h>
+#include "../src/base64_encdec.h"
 
 #define APP_NAME "BASE64_ENC_DEC"
 
@@ -29,14 +30,14 @@ void print_help()
 
 int8_t *file_read(FILE *pointer, size_t *read_bytes)
 {
-    int64_t file_size;
-    _fseeki64(pointer, 0, SEEK_END);
-    file_size = _ftelli64(pointer);
-    _fseeki64(pointer, 0, SEEK_SET);
+    int32_t file_size;
+    fseek(pointer, 0, SEEK_END);
+    file_size = ftell(pointer);
+    fseek(pointer, 0, SEEK_SET);
 
     if (file_size > SIZE_MAX)
     {
-        file_size = SIZE_MAX;
+        file_size = (int32_t)SIZE_MAX;
     }
 
     int8_t *buffer = (int8_t *)malloc((size_t)file_size);
@@ -150,17 +151,17 @@ int main(int argc, char const *argv[])
         return STRING_FILE_MODE_BOTHUSED_NOTUSED;
     }
 
-    FILE *inptr, *outptr;
+    FILE *inptr = NULL, *outptr = NULL;
     if (file_mode == true)
     {
-        fopen_s(&inptr, input, "rb");
+	inptr = fopen(input, "rb");
         if (inptr == NULL)
         {
             fprintf(stderr, "Cannot open input file\n");
             return FILE_INPUT_NOT_OPEN;
         }
 
-        fopen_s(&outptr, output, "wb");
+	outptr = fopen(output, "wb");
         if (outptr == NULL)
         {
             fprintf(stderr, "Cannot create output file\n");

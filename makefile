@@ -13,18 +13,22 @@ ifeq ($(OS),Windows_NT)
 	SUBST_TO =\\
 	SUBST_FROM =/
 	BINEXT = .exe
+	FPIC =
+	MOVE = move
 else
 	SBIN_EXT = so
 	RM = rm
 	SUBST_TO =/
 	SUBST_FROM =\\
 	BINEXT =
+	FPIC = -fPIC
+	MOVE = mv
 endif
 
 SRC_OBJ = $(OBJ_DIR)/base64_encdec.o
 EXMPL_OBJ = $(OBJ_DIR)/example.o
 
-SRC_SBIN = $(BIN_DIR)/base64_encdec_x86.$(SBIN_EXT)
+SRC_SBIN = $(BIN_DIR)/base64_encdec.$(SBIN_EXT)
 EXMPL_BIN = $(BIN_DIR)/example
 
 all: $(SRC_SBIN) $(EXMPL_BIN)
@@ -36,10 +40,11 @@ $(SRC_SBIN): $(SRC_OBJ)
 	$(CC) -shared $(CFLAGS) -D $(MACRO_NAME) -o $@ $^
 
 $(SRC_OBJ): $(SRC_DIR)/base64_encdec.c
-	$(CC) $(CFLAGS) -D $(MACRO_NAME) -o $@ -c $^
+	$(CC) $(CFLAGS) $(FPIC) -D $(MACRO_NAME) -o $@ -c $^
 
-$(EXMPL_BIN): $(EXMPL_OBJ) $(SRC_OBJ) $(SRC_SBIN)
-	$(CC) $(CFLAGS) -o $@ $^
+$(EXMPL_BIN): $(EXMPL_OBJ) $(SRC_OBJ)
+	$(CC) $(CFLAGS) -o $@ $^ 
+	
 
 $(EXMPL_OBJ): $(EXMPL_DIR)/example_main.c
 	$(CC) $(CFLAGS) -o $@ -c $^
