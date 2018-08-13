@@ -7,6 +7,12 @@ EXMPL_DIR = ./examples
 OBJ_DIR = ./objects
 BIN_DIR = ./binary
 
+SRC_OBJ = $(OBJ_DIR)/base64_encdec.o
+EXMPL_OBJ = $(OBJ_DIR)/example.o
+
+SRC_SBIN = $(BIN_DIR)/base64_encdec.$(SBIN_EXT)
+EXMPL_BIN = $(BIN_DIR)/example
+
 ifeq ($(OS),Windows_NT)
 	SBIN_EXT = dll
 	RM = del
@@ -15,6 +21,7 @@ ifeq ($(OS),Windows_NT)
 	BINEXT = .exe
 	FPIC =
 	MOVE = move
+    SBIN = $(SRC_SBIN)
 else
 	SBIN_EXT = so
 	RM = rm
@@ -23,13 +30,8 @@ else
 	BINEXT =
 	FPIC = -fPIC
 	MOVE = mv
+    SBIN =
 endif
-
-SRC_OBJ = $(OBJ_DIR)/base64_encdec.o
-EXMPL_OBJ = $(OBJ_DIR)/example.o
-
-SRC_SBIN = $(BIN_DIR)/base64_encdec.$(SBIN_EXT)
-EXMPL_BIN = $(BIN_DIR)/example
 
 all: $(SRC_SBIN) $(EXMPL_BIN)
 main: $(SRC_SBIN)
@@ -42,7 +44,7 @@ $(SRC_SBIN): $(SRC_OBJ)
 $(SRC_OBJ): $(SRC_DIR)/base64_encdec.c
 	$(CC) $(CFLAGS) $(FPIC) -D $(MACRO_NAME) -o $@ -c $^
 
-$(EXMPL_BIN): $(EXMPL_OBJ) $(SRC_OBJ)
+$(EXMPL_BIN): $(EXMPL_OBJ) $(SRC_OBJ) $(SBIN)
 	$(CC) $(CFLAGS) -o $@ $^ 
 	
 
