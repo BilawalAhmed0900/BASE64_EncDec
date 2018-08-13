@@ -28,8 +28,8 @@
 
 enum DLL_ERROR
 {
-	BASE64_ISOKAY, BASE64_NOTENOUGHMEMORY, BASE64_SIZEINVALID, 
-	BASE64_DIGITINVALID, BASE64_PADDINGOVERFLOW
+    BASE64_ISOKAY, BASE64_NOTENOUGHMEMORY, BASE64_SIZEINVALID, 
+    BASE64_DIGITINVALID, BASE64_PADDINGOVERFLOW
 };
 
 #ifdef __cplusplus
@@ -39,8 +39,8 @@ extern "C"
 
 
 /*
-	capacity will then be updated to the size written to output
-	The last \0 should not be added to size in C-style string, espacially in decode
+    capacity will then be updated to the size written to output
+    The last \0 should not be added to size in C-style string, espacially in decode
 */
 DLL_PUBLIC int32_t base64_encode(int8_t *input, size_t size, int8_t *output, size_t *capacity);
 DLL_PUBLIC int32_t base64_decode(int8_t *input, size_t size, int8_t *output, size_t *capacity);

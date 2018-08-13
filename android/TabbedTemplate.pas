@@ -37,8 +37,7 @@ type
   end;
 
 var
-  TabbedForm:    TTabbedForm;
-  dllHandle:     cardinal;
+  TabbedForm: TTabbedForm;
 
 implementation
 
