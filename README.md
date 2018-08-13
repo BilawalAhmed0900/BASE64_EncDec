@@ -8,24 +8,16 @@ Encode to and from Base64
 	void base64_geterrormessage(int32_t error_number, int8_t *message, size_t capacity);
 
 # Compilation
+## All
+Use all
 
-## Clang
-	clang -m32 -c -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.o src\base64_encdec.c
-	clang -m32 -shared -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.dll build\Base64_encdec_x86.o
+## Just shared library
+Use main
 
-## GCC
-	gcc -m32 -c -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.o src\base64_encdec.c
-	gcc -m32 -shared -D LIBRARY_EXPORT -Ofast -Wall -Werror -o build\Base64_encdec_x86.dll build\Base64_encdec_x86.o
+## Just example
+Use example
 
-# Linking to binary
-
-## Clang
-	clang -c -o file.o file.c
-	clang -o file.exe file.o Base64_encdec_x86.o Base64_encdec_x86.lib
-
-## GCC
-	gcc -c -o file.o file.c
-	gcc -o file.exe file.o Base64_encdec_x86.o Base64_encdec_x86.o
+    make all
 
 
 # Example
