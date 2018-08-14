@@ -39,7 +39,6 @@ endif
 
 all: $(SRC_SBIN) $(EXMPL_BIN)
 library: $(SRC_SBIN)
-example: $(EXMPL_BIN)
 .PHONY: clean 
 
 $(SRC_SBIN): $(SRC_OBJ)
