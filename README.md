@@ -8,7 +8,7 @@ Encode to and from Base64
 	void base64_geterrormessage(int32_t error_number, int8_t *message, size_t capacity);
 
 # Compilation
-Available make options: `all`, `library`, `clean`
+Available make options: `all`, `library` and `clean`
 
 
 # Example

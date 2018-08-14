@@ -56,6 +56,6 @@ $(EXMPL_OBJ): $(EXMPL_DIR)/example_main.c
 
 clean: 
 	$(RM) $(subst $(SUBST_FROM),$(SUBST_TO),$(SRC_SBIN))
-	$(RM) $(subst $(SUBST_FROM),$(SUBST_TO),$(EXMPL_BIN))$(BINEXT)
 	$(RM) $(subst $(SUBST_FROM),$(SUBST_TO),$(SRC_OBJ))
+	$(RM) $(subst $(SUBST_FROM),$(SUBST_TO),$(EXMPL_BIN))$(BINEXT)
 	$(RM) $(subst $(SUBST_FROM),$(SUBST_TO),$(EXMPL_OBJ))
