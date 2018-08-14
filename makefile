@@ -38,7 +38,7 @@ else
 endif
 
 all: $(SRC_SBIN) $(EXMPL_BIN)
-main: $(SRC_SBIN)
+library: $(SRC_SBIN)
 example: $(EXMPL_BIN)
 .PHONY: clean 
 
