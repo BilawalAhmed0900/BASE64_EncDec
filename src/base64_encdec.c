@@ -130,29 +130,31 @@ int32_t base64_encode(int8_t *input, size_t size, int8_t *output, size_t *capaci
     size_t written = 0;
     while (size)
     {
-        struct int24_t int24_T = { 0, 0, 0 };
-        struct gint32_t gint32_T = { 0, 0, 0, 0 };
+    	/* 
+    	   Set pointer directly to input and output to avoid useless copying 
+    	   i.e copy to struct int24_t from input 
+    	*/
+        struct int24_t *int24_T = (struct int24_t *)&input[read];
+        struct gint32_t *gint32_T = (struct gint32_t *)&output[written];
 
         size_t padding_bytes = 0;
-        size_t to_be_read = (size >= 3) ? sizeof(int24_T) : size;
-
-        memcpy(&int24_T, &input[read], to_be_read);
+        size_t to_be_read = (size >= 3) ? sizeof(struct int24_t) : size;
         read += to_be_read;     
 
         /* If even one bit is read then that byte has not to be padded */
         padding_bytes = 4 - ceil((double)(to_be_read * 8) / 6);
         size -= to_be_read;
 
-        convert_24_to_32(&int24_T, &gint32_T);
-        index_to_base64(&gint32_T);
+        convert_24_to_32(int24_T, gint32_T);
+        index_to_base64(gint32_T);
 
         switch((ptrdiff_t)padding_bytes)
         {
             /* If we have 4 padding byte than 3, 2 and 1 have to be set too */
-            case 4: gint32_T.first  = '=';
-            case 3: gint32_T.second = '=';
-            case 2: gint32_T.third  = '=';
-            case 1: gint32_T.fourth = '=';
+            case 4: gint32_T->first  = '=';
+            case 3: gint32_T->second = '=';
+            case 2: gint32_T->third  = '=';
+            case 1: gint32_T->fourth = '=';
             case 0: break;
 
             /* This should never happen */
@@ -160,8 +162,7 @@ int32_t base64_encode(int8_t *input, size_t size, int8_t *output, size_t *capaci
                 return BASE64_PADDINGOVERFLOW;
         }
 
-        memcpy(&output[written], &gint32_T, sizeof(gint32_T));
-        written += sizeof(gint32_T);
+        written += sizeof(struct gint32_t);
     }
 
     *capacity = written;
@@ -187,16 +188,19 @@ int32_t base64_decode(int8_t *input, size_t size, int8_t *output, size_t *capaci
     size_t written = 0;
     while(size)
     {
-        struct int24_t int24_T = { 0, 0, 0 };
-        struct gint32_t gint32_T = { 0, 0, 0, 0 };
+    	/* 
+    	   Set pointer directly to input and output to avoid useless copying 
+    	   i.e copy to struct int24_t from input 
+    	*/
+        struct int24_t *int24_T = (struct int24_t *)&output[written];
+        struct gint32_t *gint32_T = (struct gint32_t *)&input[read];
 
-        memcpy(&gint32_T, &input[read], sizeof(struct gint32_t));
         read += sizeof(struct gint32_t);
         size -= sizeof(struct gint32_t);
 
-        size_t padding_count = base64_to_index(&gint32_T);
-        if (gint32_T.first == (uint8_t)-1 || gint32_T.second == (uint8_t)-1 
-            || gint32_T.third == (uint8_t)-1 || gint32_T.fourth == (uint8_t)-1)
+        size_t padding_count = base64_to_index(gint32_T);
+        if (gint32_T->first == (uint8_t)-1 || gint32_T->second == (uint8_t)-1 
+            || gint32_T->third == (uint8_t)-1 || gint32_T->fourth == (uint8_t)-1)
         {
             /*
                 -1 is given when digit is not found in the array of BASE64
@@ -208,8 +212,7 @@ int32_t base64_decode(int8_t *input, size_t size, int8_t *output, size_t *capaci
 
         if ((ptrdiff_t)to_write_bytes > 0)
         {
-            convert_32_to_24(&int24_T, &gint32_T);
-            memcpy(&output[written], &int24_T, to_write_bytes);
+            convert_32_to_24(int24_T, gint32_T);
             written += to_write_bytes;  
         }
         /* 0 means no bytes to write which is legal */
