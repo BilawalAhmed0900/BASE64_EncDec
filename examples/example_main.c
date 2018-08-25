@@ -153,32 +153,33 @@ int main(int argc, char const *argv[])
     }
 
     FILE *inptr = NULL, *outptr = NULL;
+    size_t input_size, output_capacity;
+    int8_t *in_buffer = NULL, *out_buffer = NULL;
     if (file_mode == true)
     {
-	inptr = fopen(input, "rb");
+		inptr = fopen(input, "rb");
         if (inptr == NULL)
         {
             fprintf(stderr, "Cannot open input file\n");
             return FILE_INPUT_NOT_OPEN;
         }
 
-	outptr = fopen(output, "wb");
+        /*
+			Read from input and then close it, allowing same input and output file
+        */
+        in_buffer = file_read(inptr, &input_size);
+        fclose(inptr);
+
+        outptr = fopen(output, "wb");
         if (outptr == NULL)
         {
             fprintf(stderr, "Cannot create output file\n");
             return FILE_OUTPUT_NOT_OPEN;
         }
     }
-
-    size_t input_size, output_capacity;
-    int8_t *in_buffer = NULL, *out_buffer = NULL;
-    if (file_mode == true)
-    {
-        in_buffer = file_read(inptr, &input_size);
-    }
     else if (string_mode == true)
     {
-        input_size = strlen(input);
+    	input_size = strlen(input);
         in_buffer = (int8_t *)input;
     }
 
@@ -221,13 +222,11 @@ int main(int argc, char const *argv[])
     {
         free(in_buffer);
     }
-    
-    if (file_mode == true)
+    else if (file_mode == true)
     {
         fclose(outptr);
-        fclose(inptr);
     }
 
-    base64_geterrormessage(ISOKAY, NULL, 0);
+    base64_geterrormessage(BASE64_ISOKAY, NULL, 0);
     return ISOKAY;
 }
